@@ -1,5 +1,182 @@
 # Changelog
 
+## 🌤️ 0.7.0
+
+- ### ✨ Features
+
+  - **Support passing arbitrary arguments to `cargo test` via `wasm-pack test` - [chinedufn], [issue/525] [pull/530]**
+
+    `wasm-pack test` is an awesome command that wraps `cargo test` in a way that helps provide you some nice out of the
+    box configuration and setup. However, you may find yourself wanting to leverage the full funcationality of `cargo test`
+    by passing arguments that haven't been re-exported by the `wasm-pack test` interface.
+
+    For example, if you have a large test suite, it can be nice to simply run one test, or a subset of your tests.
+    `cargo test` supports this, however up until now, the `wasm-pack test` interface did not!
+
+    `wasm-pack test` now accepts passing and arbitrary set of arguments that it will forward along to its `cargo test` call
+    by allowing users to use `--` after any `wasm-pack test` arguments, followed by the set of arguments you'd like to pass
+    to `cargo test`.
+
+    For example:
+
+    ```
+    # Anything after `--` gets passed to the `cargo test`
+    wasm-pack test --firefox --headless -- --package my-workspace-crate my_test_name --color=always
+    ```
+
+    This will just run the `my_test_name` test and will output using color!
+
+    TODO: ADD LINK TO DOCS MK
+
+    [chinedufn]: https://github.com/chinedufn
+    [issue/525]: https://github.com/rustwasm/wasm-pack/issues/525
+    [pull/530]: https://github.com/rustwasm/wasm-pack/pull/530
+
+  - **Support `homepage` field of `Cargo.toml` and `package.json` - [rhysd], [pull/531]**
+
+    Both `Cargo.toml` and `package.json` support a `homepage` field that allow you to specify a website for
+    your project. We didn't support it previously (purely an accidental omission) - but now we do!
+
+    [pull/531]: https://github.com/rustwasm/wasm-pack/pull/531
+
+  - **Support `license-file` field in `Cargo.toml` - [rhysd], [pull/527]**
+
+    Sometimes, you want to provide a custom license, or specific license file that doesn't map to SPDX standard
+    licenses. In Rust/Cargo, you accomplish this by omitting the `license` field and including a `license-file`
+    field instead. You can read more about this in the [`cargo` manifest documentation].
+
+    In an npm package, this translates to `"license": "SEE LICENSE IN <filename>"` in your `package.json`. You can
+    read more about this in the [npm `package.json` documentation].
+
+    We previously only supported using SPDX standard licenses, by only supporting the `"license"` key in your
+    `Cargo.toml`- but now we'll allow you to leverage the `license-file` key as well, and will translate it
+    correctly into your `package.json`!
+
+    [`cargo` manifest documentation]: https://doc.rust-lang.org/cargo/reference/manifest.html
+    [npm `package.json` documentation]: https://docs.npmjs.com/files/package.json#license
+    [rhysd]: https://github.com/rhysd
+    [pull/527]: https://github.com/rustwasm/wasm-pack/pull/527
+
+- ### 🤕 Fixes
+
+  - **Fix chromedriver error and message on Windows for `wasm-pack test` - [jscheffner], [issue/535] [pull/537]**
+
+    When running `wasm-pack test` on a 64-bit Windows machine, users would receive an error:
+    `geckodriver binaries are unavailable for this target`. This error message had two issues- firstly, it accidentally
+    said "geckodriver" instead of "chromedriver", secondly, it threw an error instead of using the available 32-bit
+    chromedriver distribution. Chromedriver does not do a specific disribution for Windows 64-bit!
+
+    We've fixed the error message and have also ensured that 64-bit Windows users won't encounter an error, and will
+    appropriately fallback to the 32-bit Windows chromedriver.
+
+    [jscheffner]: https://github.com/jscheffner
+    [issue/535]: https://github.com/rustwasm/wasm-pack/issues/535
+    [pull/537]: https://github.com/rustwasm/wasm-pack/pull/537
+
+  - **Correct look up location for `wasm-bindgen` when it's installed via `cargo install` - [fitzgen], [pull/504]**
+
+    Sometimes, when a `wasm-bindgen` binary is not available, or if `wasm-pack` is being run on an architecture that
+    `wasm-bindgen` doesn't produce binaries for, instead of downloading a pre-built binary, `wasm-pack` will install 
+    `wasm-bindgen` using `cargo install`. This is a great and flexible back up!
+
+    However, due to the last release's recent refactor to use a global cache, we overlooked the `cargo install` case
+    and did not look for `wasm-bindgen` in the appropriate location. As a result, this led to a bug where `wasm-pack`
+    would panic.
+
+    We've fixed the lookup for the `cargo install`'d `wasm-bindgen` by moving the `cargo-install`'d version to global
+    cache location for `wasm-pack` once it's successfully built. We also eliminated the panic in favor of 
+    propagating an error. Thanks for your bug reports and sorry about the mistake!
+
+    [pull/504]: https://github.com/rustwasm/wasm-pack/pull/504
+
+  - **Only print `cargo test` output the once - [fitzgen], [issue/511] [pull/521]**
+
+    Due to some technical debt and churn in the part of the codebase that handles output, we were accidentally
+    printing the output of `cargo test` twice. Now we ensure that we print it only one time!
+
+    [issue/511]: https://github.com/rustwasm/wasm-pack/issues/511
+    [pull/521]: https://github.com/rustwasm/wasm-pack/pull/521
+
+- ### 🛠️ Maintenance
+
+  - **Fix `clippy` warnings - [mstallmo], [issue/477] [pull/478]**
+
+    [`clippy`] is an awesome utilty that helps lint your Rust code for common optimizations and idioms. at the
+    beginning of `wasm-pack` development, `clippy` had not yet stablized, but it has since 1.0'd and it was
+    high time we leveraged it in `wasm-pack`. We still aren't *completely* fixed, but we're working on it, and
+    we've already dervived a ton of value from the tool!
+
+    [`clippy`]: https://github.com/rust-lang/rust-clippy
+    [issue/477]: https://github.com/rustwasm/wasm-pack/issues/477
+    [pull/478]: https://github.com/rustwasm/wasm-pack/pull/478
+
+  - **Run `clippy` check on Travis - [drager], [pull/502]**
+
+    Now that `wasm-pack` has been clippified- we want to keep it that way! Now in addition to `cargo fmt` and
+    `cargo test`, we'll also run `cargo clippy` on all incoming PRs!
+
+    [pull/502]: https://github.com/rustwasm/wasm-pack/pull/502
+
+  - **Port tests to use `assert-cmd` - [fitzgen], [pull/522]**
+
+    [`assert_cmd`] is a great utility for testing CLI applications that is supported by the [CLI WG]. `wasm-pack`
+    development began before this library existed- so we were using a much less pleasant and efficient strategy
+    to test the CLI functionality of `wasm-pack`. Now we've ported over to using this great library!
+    
+    [CLI WG]: https://www.rust-lang.org/what/cli
+    [`assert_cmd`]: https://crates.io/crates/assert_cmd
+    [pull/522]: https://github.com/rustwasm/wasm-pack/pull/522
+
+- ### 📖 Documentation
+
+  - **Add new QuickStart guide for "Hybrid Applications with Webpack" - [DebugSteven] [pull/536]**
+
+    Since `wasm-pack` was first published, we've focused on a workflow where a user writes a library and then
+    publishes it to npm, where anyone can use it like any npm package in their JavaScript or Node.js application.
+
+    Shortly after `wasm-pack` appeared, some RustWASM teammates created a template for a similar workflow- building
+    a RustWASM package *alongside* an application. They did this by leveraging Webpack plugins, and it's a really
+    lovely user experience!
+
+    [This template] hasn't gotten as much attention because we've lacked a quickstart guide for folks to discover
+    and follow- now we've got one!
+
+    TODO LINK TO GUIDE
+
+    [This temaplte]: https://github.com/rustwasm/rust-webpack-template
+    [DebugSteven]: https://github.com/DebugSteven
+    [pull/536]: https://github.com/rustwasm/wasm-pack/pull/536
+
+  - **Add `wee_alloc` deepdive - [surma], [pull/542]**
+
+    `wee_alloc` is a useful utility that deserved more attention and explanation than our previous docs addressed.
+    This was partially because the `wasm-pack` template has an explanatory comment that helps explain its use.
+    However, for folks who don't use the template, `wee_alloc` is something important to know about- so now we have
+    given it its own section!
+
+    TO DO DOCS LINK !!!
+
+    [surma]: https://github.com/surma
+    [pull/542]: https://github.com/rustwasm/wasm-pack/pull/542
+
+  - **Clarify what kind of account `login` adds - [killercup], [pull/539]**
+
+    Previously, when view `--help`, the command description for `login` showed:
+    `👤  Add a registry user account!` This could be confusing for folks, so now it's been updated to read:
+    `👤  Add an npm registry user account!`, which is much clearer!
+
+    [killercup]: https://github.com/killercup
+    [pull/539]: https://github.com/rustwasm/wasm-pack/pull/539
+
+  - **Fix links and Rust highlightning - [drager], [issue/513] [pull/514] [pull/516]**
+
+    We had some broken links and missing Rust syntax highlighting in a few sections of the docs. This fixes that!
+
+    [issue/513]: https://github.com/rustwasm/wasm-pack/issues/513
+    [pull/514]: https://github.com/rustwasm/wasm-pack/pull/514
+    [pull/516]: https://github.com/rustwasm/wasm-pack/pull/516  
+    
+
 ## 🌅 0.6.0
 
 - ### ✨ Features
