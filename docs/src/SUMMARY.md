@@ -24,6 +24,7 @@
       - [`Cargo.toml`](./tutorials/npm-browser-packages/template-deep-dive/cargo-toml.md)
       - [`src/lib.rs`](./tutorials/npm-browser-packages/template-deep-dive/src-lib-rs.md)
       - [`src/utils.rs`](./tutorials/npm-browser-packages/template-deep-dive/src-utils-rs.md)
+      - [`wee_alloc`](./tutorial/template-deep-dive/wee_alloc.md)
     - [Building your project](./tutorials/npm-browser-packages/template-deep-dive/building-your-project.md)
     - [Packaging and publishing](./tutorials/npm-browser-packages/packaging-and-publishing.md)
     - [Using your library](./tutorials/npm-browser-packages/using-your-library.md)
