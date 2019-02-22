@@ -7,7 +7,7 @@
   - **Support passing arbitrary arguments to `cargo test` via `wasm-pack test` - [chinedufn], [issue/525] [pull/530]**
 
     `wasm-pack test` is an awesome command that wraps `cargo test` in a way that helps provide you some nice out of the
-    box configuration and setup. However, you may find yourself wanting to leverage the full funcationality of `cargo test`
+    box configuration and setup. However, you may find yourself wanting to leverage the full functionality of `cargo test`
     by passing arguments that haven't been re-exported by the `wasm-pack test` interface.
 
     For example, if you have a large test suite, it can be nice to simply run one test, or a subset of your tests.
