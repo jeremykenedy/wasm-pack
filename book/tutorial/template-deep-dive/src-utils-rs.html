@@ -1,0 +1,256 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>src/utils.rs - Hello wasm-pack!</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="../../prerequisites/index.html"><strong aria-hidden="true">1.</strong> Prerequisites</a></li><li><ol class="section"><li><a href="../../prerequisites/rust.html"><strong aria-hidden="true">1.1.</strong> Rust</a></li><li><a href="../../prerequisites/npm.html"><strong aria-hidden="true">1.2.</strong> npm</a></li></ol></li><li><a href="../../project-setup/index.html"><strong aria-hidden="true">2.</strong> Project Setup</a></li><li><ol class="section"><li><a href="../../project-setup/using-a-template.html"><strong aria-hidden="true">2.1.</strong> Using a Template</a></li><li><a href="../../project-setup/manual-setup.html"><strong aria-hidden="true">2.2.</strong> Manual Setup</a></li></ol></li><li><a href="../../commands/index.html"><strong aria-hidden="true">3.</strong> Commands</a></li><li><ol class="section"><li><a href="../../commands/init.html"><strong aria-hidden="true">3.1.</strong> init (DEPRECATED)</a></li><li><a href="../../commands/build.html"><strong aria-hidden="true">3.2.</strong> build</a></li><li><a href="../../commands/pack-and-publish.html"><strong aria-hidden="true">3.3.</strong> pack and publish</a></li></ol></li><li><a href="../../tutorial/index.html"><strong aria-hidden="true">4.</strong> Tutorial</a></li><li><ol class="section"><li><a href="../../tutorial/getting-started.html"><strong aria-hidden="true">4.1.</strong> Getting Started</a></li><li><a href="../../tutorial/template-deep-dive/index.html"><strong aria-hidden="true">4.2.</strong> Template Deep Dive</a></li><li><ol class="section"><li><a href="../../tutorial/template-deep-dive/cargo-toml.html"><strong aria-hidden="true">4.2.1.</strong> Cargo.toml</a></li><li><a href="../../tutorial/template-deep-dive/src-lib-rs.html"><strong aria-hidden="true">4.2.2.</strong> src/lib.rs</a></li><li><a href="../../tutorial/template-deep-dive/src-utils-rs.html" class="active"><strong aria-hidden="true">4.2.3.</strong> src/utils.rs</a></li><li><a href="../../tutorial/template-deep-dive/wee_alloc.html"><strong aria-hidden="true">4.2.4.</strong> wee_alloc</a></li></ol></li><li><a href="../../tutorial/packaging-and-publishing.html"><strong aria-hidden="true">4.3.</strong> Packaging and Publishing</a></li><li><a href="../../tutorial/using-your-library.html"><strong aria-hidden="true">4.4.</strong> Using your Library</a></li></ol></li><li><a href="../../cargo-toml-configuration.html"><strong aria-hidden="true">5.</strong> Cargo.toml Configuration</a></li><li><a href="../../contributing.html"><strong aria-hidden="true">6.</strong> Contributing</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Hello wasm-pack!</h1> 
+
+                        <div class="right-buttons">
+                            <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#srcutilsrs" id="srcutilsrs"><h1>src/utils.rs</h1></a>
+<p>The purpose of <code>utils.rs</code> is to define the <code>utils</code> module, which contains a single function <code>set_panic_hook</code>. This function becomes part of the <code>utils</code> module in <code>lib.rs</code>, as described in the preceding section.</p>
+<p>If the <code>console_error_panic_hook</code> feature is not enabled, then <code>set_panic_hook</code> is defined to be an inlined empty function. So, there is no run-time performance or code-size penalty incurred by its use.</p>
+<p>We will discuss:</p>
+<ol>
+<li><a href="#a1-defining-set_panic_hook">Defining <code>set_panic_hook</code></a></li>
+<li><a href="#a2-what-is-console_error_panic_hook">What is <code>console_error_panic_hook</code>?</a></li>
+</ol>
+<hr />
+<a class="header" href="#1-defining-set_panic_hook" id="1-defining-set_panic_hook"><h2>1. Defining <code>set_panic_hook</code></h2></a>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+use cfg_if::cfg_if;
+#}</code></pre></pre>
+<p>This allows us to write <code>cfg_if!</code> instead of <code>cfg_if::cfg_if!</code>, identically to the line in <code>src/lib.rs</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+cfg_if! {
+    if #[cfg(feature = &quot;console_error_panic_hook&quot;)] {
+        extern crate console_error_panic_hook;
+        pub use self::console_error_panic_hook::set_once as set_panic_hook;
+    } else {
+        #[inline]
+        pub fn set_panic_hook() {}
+    }
+}
+#}</code></pre></pre>
+<p>As described in the preceding section, the macro <code>cfg_if!</code> evaluates the <code>if</code> statement during compile time. This is possible because it is essentially testing whether <code>&quot;console_error_panic_hook&quot;</code> is defined in the <code>[features]</code> section of <code>Cargo.toml</code>, which is available during compile time.</p>
+<p>The entire macro block will either be replaced with the statements in the <code>if</code> block or with those in the <code>else</code> block. These two cases are now described in turn:</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+extern crate console_error_panic_hook;
+pub use self::console_error_panic_hook::set_once as set_panic_hook;
+#}</code></pre></pre>
+<p>Due to the <code>use</code> statement, the function <code>self::console_error_panic_hook::set_once</code> can now be accessed more conveniently as <code>set_panic_hook</code>. Due to <code>pub</code>, this function will be publicly accessible outside of the <code>utils</code> module as <code>utils::set_panic_hook</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+#[inline]
+pub fn set_panic_hook() {}
+#}</code></pre></pre>
+<p>An inline function replaces the function call with the contents of the function during compile time. Here, <code>set_panic_hook</code> is defined to be an empty inline function. This allows the use of <code>set_panic_hook</code> without any run-time or code-size performance penalty if the feature is not enabled.</p>
+<a class="header" href="#2-what-is-console_error_panic_hook" id="2-what-is-console_error_panic_hook"><h2>2. What is <code>console_error_panic_hook</code>?</h2></a>
+<p>The crate <code>console_error_panic_hook</code> enhances error messages in the web browser. This allows you to easily debug WebAssembly code.</p>
+<p>Let's compare error messages before and after enabling the feature:</p>
+<p><strong>Before:</strong> <code>&quot;RuntimeError: Unreachable executed&quot;</code></p>
+<p><strong>After:</strong> <code>&quot;panicked at 'index out of bounds: the len is 3 but the index is 4', libcore/slice/mod.rs:2046:10&quot;</code></p>
+<p>To do this, a panic hook for WebAssembly is provided that logs panics to the developer console via the JavaScript <code>console.error</code> function.</p>
+<p>Note that although the template sets up the function, your error messages will not automatically be enhanced. To enable the enhanced errors, call the function <code>utils::set_panic_hook()</code> in <code>lib.rs</code> when your code first runs. The function may be called multiple times if needed.</p>
+<p>For more details, see the <a href="https://github.com/rustwasm/console_error_panic_hook"><code>console_error_panic_hook</code> repository</a>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../../tutorial/template-deep-dive/src-lib-rs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../../tutorial/template-deep-dive/wee_alloc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="../../tutorial/template-deep-dive/src-lib-rs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="../../tutorial/template-deep-dive/wee_alloc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

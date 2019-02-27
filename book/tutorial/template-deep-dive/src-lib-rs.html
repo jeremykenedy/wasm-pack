@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>src/lib.rs - Hello wasm-pack!</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="../../prerequisites/index.html"><strong aria-hidden="true">1.</strong> Prerequisites</a></li><li><ol class="section"><li><a href="../../prerequisites/rust.html"><strong aria-hidden="true">1.1.</strong> Rust</a></li><li><a href="../../prerequisites/npm.html"><strong aria-hidden="true">1.2.</strong> npm</a></li></ol></li><li><a href="../../project-setup/index.html"><strong aria-hidden="true">2.</strong> Project Setup</a></li><li><ol class="section"><li><a href="../../project-setup/using-a-template.html"><strong aria-hidden="true">2.1.</strong> Using a Template</a></li><li><a href="../../project-setup/manual-setup.html"><strong aria-hidden="true">2.2.</strong> Manual Setup</a></li></ol></li><li><a href="../../commands/index.html"><strong aria-hidden="true">3.</strong> Commands</a></li><li><ol class="section"><li><a href="../../commands/init.html"><strong aria-hidden="true">3.1.</strong> init (DEPRECATED)</a></li><li><a href="../../commands/build.html"><strong aria-hidden="true">3.2.</strong> build</a></li><li><a href="../../commands/pack-and-publish.html"><strong aria-hidden="true">3.3.</strong> pack and publish</a></li></ol></li><li><a href="../../tutorial/index.html"><strong aria-hidden="true">4.</strong> Tutorial</a></li><li><ol class="section"><li><a href="../../tutorial/getting-started.html"><strong aria-hidden="true">4.1.</strong> Getting Started</a></li><li><a href="../../tutorial/template-deep-dive/index.html"><strong aria-hidden="true">4.2.</strong> Template Deep Dive</a></li><li><ol class="section"><li><a href="../../tutorial/template-deep-dive/cargo-toml.html"><strong aria-hidden="true">4.2.1.</strong> Cargo.toml</a></li><li><a href="../../tutorial/template-deep-dive/src-lib-rs.html" class="active"><strong aria-hidden="true">4.2.2.</strong> src/lib.rs</a></li><li><a href="../../tutorial/template-deep-dive/src-utils-rs.html"><strong aria-hidden="true">4.2.3.</strong> src/utils.rs</a></li><li><a href="../../tutorial/template-deep-dive/wee_alloc.html"><strong aria-hidden="true">4.2.4.</strong> wee_alloc</a></li></ol></li><li><a href="../../tutorial/packaging-and-publishing.html"><strong aria-hidden="true">4.3.</strong> Packaging and Publishing</a></li><li><a href="../../tutorial/using-your-library.html"><strong aria-hidden="true">4.4.</strong> Using your Library</a></li></ol></li><li><a href="../../cargo-toml-configuration.html"><strong aria-hidden="true">5.</strong> Cargo.toml Configuration</a></li><li><a href="../../contributing.html"><strong aria-hidden="true">6.</strong> Contributing</a></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Hello wasm-pack!</h1> 
+
+                        <div class="right-buttons">
+                            <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="#srclibrs" id="srclibrs"><h1>src/lib.rs</h1></a>
+<p><code>lib.rs</code> is the template's main source file. The name <code>lib.rs</code> commonly implies that this Rust project will be compiled as a library.</p>
+<p>It contains three key parts:</p>
+<ol>
+<li><a href="#a1-wasm_bindgen-functions"><code>#[wasm_bindgen] functions</code></a></li>
+<li><a href="#a2-crate-imports">Crate imports</a></li>
+<li><a href="#a3-wee_alloc-optional-dependecy"><code>wee_alloc</code> optional dependecy</a>
+<ul>
+<li><a href="#what-is-wee_alloc">What is <code>wee_alloc</code>?</a></li>
+</ul>
+</li>
+</ol>
+<hr />
+<p>We'll start with the most important part of <code>lib.rs</code> -- the two <code>#[wasm_bindgen]</code> functions. In many cases, this is the only part of <code>lib.rs</code> you will need to modify.</p>
+<a class="header" href="#1-wasm_bindgen-functions" id="1-wasm_bindgen-functions"><h2>1. <code>#[wasm_bindgen]</code> functions</h2></a>
+<p>The <code>#[wasm_bindgen]</code> attribute indicates that the function below it will be accessible both in JavaScript and Rust.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+#[wasm_bindgen]
+extern {
+    fn alert(s: &amp;str);
+}
+#}</code></pre></pre>
+<p>The <code>extern</code> block imports the external JavaScript function <code>alert</code> into Rust. This declaration is required to call <code>alert</code> from Rust. By declaring it in this way, <code>wasm-bindgen</code> will create JavaScript stubs for <code>alert</code> which allow us to pass strings back and forth between Rust and JavaScript.</p>
+<p>We can see that the <code>alert</code> function requires a single parameter <code>s</code> of type <code>&amp;str</code>, a string. In Rust, any string literal such as <code>&quot;Hello, test-wasm!&quot;</code> is of type <code>&amp;str</code>. So, <code>alert</code> could be called by writing <code>alert(&quot;Hello, test-wasm!&quot;);</code>.</p>
+<p>We knew to declare <code>alert</code> in this way because it is how we would call <code>alert</code> in JavaScript -- by passing it a string argument.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+#[wasm_bindgen]
+pub fn greet() {
+    alert(&quot;Hello, test-wasm!&quot;);
+}
+#}</code></pre></pre>
+<p>If we were to write the <code>greet</code> function without the <code>#[wasm_bindgen]</code> attribute, then <code>greet</code> would not be easily accessible within JavaScript. Furthermore, we wouldn't be able to natively convert certain types such as <code>&amp;str</code> between JavaScript and Rust. So, both the <code>#[wasm_bindgen]</code> attribute and the prior import of <code>alert</code> allow <code>greet</code> to be called from JavaScript.</p>
+<p>This is all you need to know to interface with JavaScript! If you are curious about the rest, read on.</p>
+<a class="header" href="#2-crate-imports" id="2-crate-imports"><h2>2. Crate imports</h2></a>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+extern crate cfg_if;
+extern crate wasm_bindgen;
+#}</code></pre></pre>
+<p>In <code>Cargo.toml</code>, we included the crates <code>cfg_if</code> and <code>wasm_bindgen</code> as project dependencies.</p>
+<p>Here, we explicitly declare that these crates will be used in <code>lib.rs</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+mod utils;
+#}</code></pre></pre>
+<p>This statement declares a new module named <code>utils</code> that is defined by the contents of <code>utils.rs</code>. Equivalently, we could place the contents of <code>utils.rs</code> inside the <code>utils</code> declaration, replacing the line with:</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+mod utils {
+    // contents of utils.rs
+}
+#}</code></pre></pre>
+<p>Either way, the contents of <code>utils.rs</code> define a single public function <code>set_panic_hook</code>. Because we are placing it inside the <code>utils</code> module, we will be able to call the function directly by writing <code>utils::set_panic_hook()</code>. We will discuss how and why to use this function in <code>src/utils.rs</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+use cfg_if::cfg_if;
+#}</code></pre></pre>
+<p><code>use</code> allows us to conveniently refer to parts of a crate or module. For example, suppose the crate <code>cfg_if</code> contains a function <code>func</code>. It is always possible to call this function directly by writing <code>cfg_if::func()</code>. However, this is often tedious to write. If we first specify <code>use cfg_if::func;</code>, then <code>func</code> can be called by just writing <code>func()</code> instead.</p>
+<p>With this in mind, this <code>use</code> allows us to call the macro <code>cfg_if!</code> inside the crate <code>cfg_if</code> without writing <code>cfg_if::cfg_if!</code>. We use <code>cfg_if!</code> to configure <code>wee_alloc</code>, which we will talk more about in a <a href="./wee_alloc.html">separate section</a>:</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+cfg_if! {
+    if #[cfg(feature = &quot;wee_alloc&quot;)] {
+        extern crate wee_alloc;
+        #[global_allocator]
+        static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+    }
+}
+#}</code></pre></pre>
+<p>We immediately notice that <code>cfg_if!</code> is a macro because it ends in <code>!</code>, similarly to other Rust macros such as <code>println!</code> and <code>vec!</code>. A macro is directly replaced by other code during compile time.</p>
+<p>During compile time, <code>cfg_if!</code> evaluates the <code>if</code> statement. This tests whether the feature <code>wee_alloc</code> is present in the <code>[features]</code> section of <code>Cargo.toml</code> (among other possible ways to set it).</p>
+<p>As we saw earlier, the <code>default</code> vector in <code>[features]</code> only contains <code>&quot;console_error_panic_hook&quot;</code> and not <code>&quot;wee_alloc&quot;</code>. So, in this case, the <code>cfg_if!</code> block will be replaced by no code at all, and hence the default memory allocator will be used instead of <code>wee_alloc</code>.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+use wasm_bindgen::prelude::*;
+#}</code></pre></pre>
+<p>Many modules contain a prelude, a list of things that should be automatically imported. This allows common features of the module to be conveniently accessed without a lengthy prefix. For example, in this file we can use <code>#[wasm_bindgen]</code> only because it is brought into scope by the prelude.</p>
+<p>The asterisk at the end of this <code>use</code> indicates that everything inside the module <code>wasm_bindgen::prelude</code> (i.e. the module <code>prelude</code> inside the crate <code>wasm_bindgen</code>) can be referred to without prefixing it with <code>wasm_bindgen::prelude</code>.</p>
+<p>For example, <code>#[wasm_bindgen]</code> could also be written as <code>#[wasm_bindgen::prelude::wasm_bindgen]</code>, although this is not recommended.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../../tutorial/template-deep-dive/cargo-toml.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../../tutorial/template-deep-dive/src-utils-rs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="../../tutorial/template-deep-dive/cargo-toml.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="../../tutorial/template-deep-dive/src-utils-rs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
